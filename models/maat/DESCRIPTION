@@ -1,0 +1,29 @@
+Package: PEcAn.MAAT
+Type: Package
+Title: PEcAn Package for Integration of the MAAT Model
+Version: 1.7.3
+Authors@R: as.person(c(
+    "Shawn Serbin <sserbin@bnl.gov> [aut, cre]", 
+    "Anthony Walker <walkerap@ornl.gov> [aut]"
+     ))
+Maintainer: Shawn Serbin <sserbin@bnl.gov>
+Description: This module provides functions to wrap the MAAT model into the PEcAn workflows.
+Imports:
+    PEcAn.data.atmosphere,
+    PEcAn.logger,
+    PEcAn.remote,
+    PEcAn.settings,
+    PEcAn.utils,
+    lubridate (>= 1.6.0),
+    ncdf4 (>= 1.15),
+    XML
+Suggests:
+    testthat (>= 1.0.2)
+SystemRequirements: MAAT
+OS_type: unix
+License: BSD_3_clause + file LICENSE
+Copyright: Authors
+LazyLoad: yes
+LazyData: FALSE
+Encoding: UTF-8
+RoxygenNote: 7.3.2

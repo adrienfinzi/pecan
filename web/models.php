@@ -13,10 +13,15 @@ require("common.php");
 open_database();
 if ($authentication) {
 	if (!check_login()) {
-		close_database();
 		header('HTTP/1.1 403 Unauthorized');
+		close_database();
 		exit;
 	}
+    if (get_page_acccess_level() > $min_run_level) {
+		header('HTTP/1.1 403 Unauthorized');
+        close_database();
+        exit;
+    }
 }
 
 // Start XML file, create parent node
@@ -28,24 +33,25 @@ $parnode = $dom->appendChild($node);
 if (isset($_REQUEST['host']) && ($_REQUEST['host'] != "")) {
 	// check for models
 	$query = "SELECT models.* FROM models, dbfiles, machines";
-	$query .= " WHERE machines.hostname='{$_REQUEST['host']}'";
+	$query .= " WHERE machines.hostname=?";
 	$query .= "   AND dbfiles.container_id = models.id AND dbfiles.machine_id=machines.id AND dbfiles.container_type='Model'";
 	$query .= " ORDER BY models.model_name DESC, models.revision DESC";
 	
 	// Select all the rows in the models table
-	$result = $pdo->query($query);
-	if (!$result) {
-		die('Invalid query: ' . error_database());
-	} 
+  $stmt = $pdo->prepare($query);
+  if (!$stmt->execute(array($_REQUEST['host']))) {
+    die('Invalid query: ' . error_database());
+  }
 	
 	// Iterate through the rows, adding XML nodes for each
-	while ($row = @$result->fetch(PDO::FETCH_ASSOC)){ 
+	while ($row = @$stmt->fetch(PDO::FETCH_ASSOC)) { 
 		$node = $dom->createElement("model");
 		$newnode = $parnode->appendChild($node);	 
 		$newnode->setAttribute("id",$row['id']);
 		$newnode->setAttribute("name", $row['model_name']);
 		$newnode->setAttribute("revision", $row['revision']);	
 	} 
+  $stmt->closeCursor();
 }
 
 echo $dom->saveXML();

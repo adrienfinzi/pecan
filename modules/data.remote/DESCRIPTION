@@ -1,17 +1,58 @@
 Package: PEcAn.data.remote
 Type: Package
-Title: PEcAn functions used for remote sensing
-Version: 1.3.7
-Date: 2014-09-15
-Author: Mike Dietze
-Maintainer: Mike Dietze <dietze@bu.edu>
-Description: PEcAn module for processing remote data
-Suggests: 
-	rPython
-Suggests: testthat
-License: FreeBSD + file LICENSE
+Title: PEcAn Functions Used for Extracting Remote Sensing Data
+Version: 1.8.0
+Authors@R: c(person("Mike", "Dietze", role = c("aut"),
+                     email = "dietze@bu.edu"),
+             person("Bailey", "Morrison", role = c("aut", "cre"),
+                     email = "bmorrison@bnl.gov"),
+             person("University of Illinois, NCSA", role = c("cph")))
+Author: Mike Dietze, Bailey Morrison
+Maintainer: Bailey Morrison <bmorrison@bnl.gov>
+Description: PEcAn module for processing remote data. Python module requirements: requests, json, re, ast, panads, sys. If any of these modules are missing, install using pip install <module name>.
+Imports:
+    curl,
+    DBI,
+    furrr,
+    future,
+    glue,
+    ncdf4,
+    PEcAn.DB,
+    PEcAn.utils,
+    purrr,
+    XML,
+    sp,
+    MODISTools (>= 1.1.0),
+    reticulate,
+    PEcAn.logger,
+    magrittr,
+    PEcAn.remote,
+    rlang,
+    terra,
+    doParallel,
+    parallel,
+    foreach
+Suggests:
+    data.table,
+    dplyr,
+    getPass,
+    GEDI4R,
+    ggplot2,
+    grDevices,
+    httr,
+    jsonlite,
+    lubridate,
+    raster,
+    reshape,
+    sf,
+    testthat (>= 1.0.2),
+    tibble,
+    utils
+Remotes:
+    github::VangiElia/GEDI4R
+License: BSD_3_clause + file LICENSE
 Copyright: Authors
 LazyLoad: yes
 LazyData: FALSE
-Collate:
-	'call_MODIS.R'
+Encoding: UTF-8
+RoxygenNote: 7.3.2

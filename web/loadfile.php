@@ -13,10 +13,15 @@ require("common.php");
 open_database();
 if ($authentication) {
 	if (!check_login()) {
-		close_database();
 		header('HTTP/1.1 403 Unauthorized');
-		exit;
+        close_database();
+        exit;
 	}
+    if (get_page_acccess_level() > $min_run_level) {
+		header('HTTP/1.1 403 Unauthorized');
+        close_database();
+        exit;
+    }
 }
 
 // runid
@@ -30,12 +35,12 @@ if (!isset($_REQUEST['name'])) {
 $name = $_REQUEST['name'];
 
 // get run information
-$query = "SELECT folder FROM workflows WHERE workflows.id=${workflowid}";
-$result = $pdo->query($query);
-if (!$result) {
-	die('Invalid query: ' . error_database());
+$stmt = $pdo->prepare("SELECT folder FROM workflows WHERE workflows.id=?");
+if (!$stmt->execute(array($workflowid))) {
+  die('Invalid query: ' . error_database());
 }
-$run = $result->fetch(PDO::FETCH_ASSOC);
+$run = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt->closeCursor();
 $folder = str_replace("//", "/", $run['folder']);
 
 $file = realpath("$folder/$name");

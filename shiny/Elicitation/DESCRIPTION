@@ -1,0 +1,15 @@
+Type: Shiny
+Title: Expert Prior Elicitation
+License: BSD_3_clause + file LICENSE
+Author:
+	Mike Dietze <dietze@bu.edu>,
+	Rob Kooper <kooper@illinois.edu>
+AuthorUrl: http://www.ncsa.illinois.edu/assets/php/directory/contact.php?contact=kooper
+Tags: PEcAn
+DisplayMode: Normal
+Imports:
+	PEcAn.DB,
+	PEcAn.visualization,
+	SHELF,
+	shiny
+Remotes: OakleyJ/SHELF

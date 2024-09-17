@@ -4,6 +4,10 @@
 exec 3>&1
 exec &> "@OUTDIR@/logfile.txt"
 
+# host specific setup
+@HOST_SETUP@
+@CDO_SETUP@
+
 # create output folder
 mkdir -p "@OUTDIR@"
 
@@ -16,7 +20,7 @@ if [ ! -e "@OUTDIR@/results.csv" ]; then
   
   # check the status
   if [ $STATUS -ne 0 ]; then
-    echo -e "ERROR IN MODEL RUN\nLogile is located at '@OUTDIR@/logfile.txt'" >&3
+    echo -e "ERROR IN MODEL RUN\nLogfile is located at '@OUTDIR@/logfile.txt'" >&3
     exit $STATUS
   fi
 
@@ -31,5 +35,8 @@ cp  "@RUNDIR@/README.txt" "@OUTDIR@/README.txt"
 
 # run getdata to extract right variables
 
+# host specific teardown
+@HOST_TEARDOWN@
+
 # all done
-echo -e "MODEL FINISHED\nLogile is located at '@OUTDIR@/logfile.txt'" >&3
+echo -e "MODEL FINISHED\nLogfile is located at '@OUTDIR@/logfile.txt'" >&3

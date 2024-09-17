@@ -16,11 +16,11 @@
 args     <- commandArgs(trailingOnly = TRUE)
 datafile <- args[1]
 year     <- args[2]
-xvar     <- 'time'
-yvar     <- args[3]
-width    <- as.numeric(args[4])
-height   <- as.numeric(args[5])
-filename <- args[6]
+xvar     <- args[3]
+yvar     <- args[4]
+width    <- as.numeric(args[5])
+height   <- as.numeric(args[6])
+filename <- args[7]
 
 # datafile="../../output/PEcAn_14/out/23/2006.nc"
 # year=2006
@@ -31,5 +31,5 @@ filename <- args[6]
 # filename="plot.png"
  
 #error_reporting(E_ALL | E_STRICT);
-PEcAn.visualization::plot.netcdf(datafile, yvar, xvar, width, height, filename, year);
+PEcAn.visualization::plot_netcdf(datafile, yvar, xvar, width, height, filename, year);
  

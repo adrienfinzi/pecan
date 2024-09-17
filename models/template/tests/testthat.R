@@ -9,5 +9,5 @@
 library(testthat)
 library(PEcAn.utils)
 
-logger.setQuitOnSevere(FALSE)
-test_check("PEcAn.SIPNET")
+PEcAn.logger::logger.setQuitOnSevere(FALSE)
+#test_check("PEcAn.ModelName")

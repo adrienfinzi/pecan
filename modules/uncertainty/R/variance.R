@@ -14,13 +14,17 @@
 ##' @return list with variance and sd of variance
 ##' @author David LeBauer
 variance.stats <- function(x){
-  list(var = var(x), sd = sd.var(x))
+  list(var = stats::var(x), sd = sd.var(x))
 }
 
 ##' Calculate distribution of function of a variable
 ##'
 ##' Transform trait parameter through trait-specific univariate model emulator spline function
-##' Given a matrix of parameter sets, calculates a matrix of model output by applying appropriate spline function to each parameter. Output is use with \code{\link{variance.decomposition}} and \code{\link{spline.ensemble}}  
+##' Given a matrix of parameter sets, calculates a matrix of model output
+##'   by applying appropriate spline function to each parameter.
+##'   Output is used with \code{\link{plot_variance_decomposition}}
+##'   and \code{\link{spline.ensemble}}
+##'
 ##' @title Get g_i(phi_i)
 ##' @param splinefuns univariate spline functions created for each trait, e.g. by the \code{\link{sensitivity.analysis}} function. 
 ##' @param trait.samples n x m matrix (or list with m vectors of length n) of n parameter sets, each with a sample from m traits 
@@ -29,7 +33,7 @@ variance.stats <- function(x){
 ##' @author David LeBauer
 get.gi.phii <- function(splinefuns, trait.samples, maxn = NULL){
   ## check inputs
-  if(class(trait.samples) == 'list'){
+  if(is.list(trait.samples)){
     trait.samples <- matrix(unlist(trait.samples), 
                             ncol = length(names(trait.samples)))
     colnames(trait.samples) <- names(splinefuns)
@@ -38,25 +42,25 @@ get.gi.phii <- function(splinefuns, trait.samples, maxn = NULL){
       trait.samples <- trait.samples[j, ]
     }
   }
-  if(class(trait.samples) != 'matrix'){
+  if(!is.matrix(trait.samples)){
     stop(paste('variance.decomposition currently does not handle trait.samples of class', class(trait.samples), '\n please convert to list or matrix'))
   }
   if(!all(names(splinefuns) %in% colnames(trait.samples))){
     stop('mismatch between splinefuns and samples')
   }
   traits <- names(splinefuns)
-     
+  
   ## g_i(phi_i) the spline estimate of model output for value of trait i
-  gi.phii <- t(laply(traits, 
-                    function(x) splinefuns[[x]](trait.samples[,x])))
+  gi.phii <- t(plyr::laply(traits, 
+                     function(x) splinefuns[[x]](trait.samples[,x])))
   colnames(gi.phii) <- traits
   return(gi.phii)
 }
 
 ##' Estimate model output based on univariate splines
 ##'
-##' Accepts output from get.gi.phii (the matrix $g(\phi_i)$) and produces
-##' spline estimate of $f(phi)$ for use in estimating closure term associated with
+##' Accepts output from get.gi.phii (the matrix \eqn{g(\phi_i)}) and produces
+##' spline estimate of \eqn{f(\phi)} for use in estimating closure term associated with
 ##' spline approximation
 ##' @title Spline Ensemble
 ##' @author David LeBauer
@@ -76,8 +80,8 @@ spline.ensemble <- function(gi.phii, median){
 
 vd.variance <- function(gi.phii){
   ## Calculate variance for each trait
-  var.phii    <- apply(gi.phii, 2, var)
+  var.phii    <- apply(gi.phii, 2, stats::var)
   sd.var.phii <- apply(gi.phii, 2, sd.var)
   return(list(var = sum(var.phii),
-         sd  = sqrt(sum(sd.var.phii^2))))
+              sd  = sqrt(sum(sd.var.phii^2))))
 }

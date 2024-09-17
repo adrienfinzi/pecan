@@ -5,17 +5,17 @@
 ################################
 ## Load Required Packages
 ################################
-require(sp)
+library(sp)
 require(rgdal)
-require(raster)
+library(raster)
 
-require(RgoogleMaps)
-require(maptools)
-require(ggplot2)
-require(car)
-require(spatstat)
-require(fields)
-require(reshape)
+library(RgoogleMaps)
+library(maptools)
+library(ggplot2)
+library(car)
+library(spatstat)
+library(fields)
+library(reshape)
 
 ################################
 ## OPTIONS
@@ -595,7 +595,7 @@ bayes.curve.fit(outpath,coord.set,fia,n.reps,n.chain)
 # #                          data=list(y = y, x = x), 
 # #                          start=list(alpha = .75, beta = mean(y[x > quantile(x)[4]])), 
 # #                          na.action="na.exclude", trace=F)
-# #     biomass_R2 <- 1 - var(residuals(biomass_curve)) / var(y)  # R2
+# #     biomass_R2 <- 1 - stats::var(residuals(biomass_curve)) / stats::var(y)  # R2
 # #     
 # #     # Plot rectangular hyperbola model fit
 # #     mod.alpha <- summary(biomass_curve)$parameters[1]  	# alpha value
